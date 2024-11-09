@@ -1,0 +1,32 @@
+created: 20241029165421332
+modified: 20241105121322950
+tags: 
+title: $:/plugins/anttt/highlight/settings
+
+<style>
+.table,
+.table td {
+border: none;
+}
+</style>
+
+Set the colors to be used for highlighting.
+
+"""
+The colors can be specified using any of the valid CSS color formats. See e.g. [[CSS Color Values|https://www.w3schools.com/cssref/css_colors_legal.php]] and [[CSS Colors|https://www.w3schools.com/cssref/css_colors.php]].
+Invalid or empty color specifications will do no harm.
+"""
+
+<table class="table">
+<tr><td>highlight color:</td><td><$edit-text                    tiddler="$:/plugins/anttt/highlight/config/highlight-color" tag="input"/></td><td>@@.highlight text@@</td></tr>
+<tr><td>highlight background color:</td><td><$edit-text         tiddler="$:/plugins/anttt/highlight/config/highlight-background-color" tag="input"/></td></tr>
+<tr><td>current highlight color:</td><td><$edit-text            tiddler="$:/plugins/anttt/highlight/config/highlight-current-color" tag="input"/></td><td>@@.highlight-current current text@@</td></tr>
+<tr><td>current highlight background color:</td><td><$edit-text tiddler="$:/plugins/anttt/highlight/config/highlight-current-background-color" tag="input"/></td></tr>
+</table>
+
+<$button class="button button-right">Defaults
+<$action-setfield $tiddler="$:/plugins/anttt/highlight/config/highlight-color" text="darkslategray"/>
+<$action-setfield $tiddler="$:/plugins/anttt/highlight/config/highlight-background-color" text="paleturquoise"/>
+<$action-setfield $tiddler="$:/plugins/anttt/highlight/config/highlight-current-color" text="darkslategray"/>
+<$action-setfield $tiddler="$:/plugins/anttt/highlight/config/highlight-current-background-color" text="pink"/>
+</$button>

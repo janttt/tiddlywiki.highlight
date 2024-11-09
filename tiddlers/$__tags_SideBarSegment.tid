@@ -1,0 +1,5 @@
+created: 20241029144217037
+list: $:/core/ui/SideBarSegments/site-title $:/core/ui/SideBarSegments/site-subtitle $:/core/ui/SideBarSegments/page-controls $:/core/ui/SideBarSegments/search $:/plugins/anttt/highlight/widget $:/core/ui/SideBarSegments/tabs
+modified: 20241030194630634
+title: $:/tags/SideBarSegment
+type: text/vnd.tiddlywiki

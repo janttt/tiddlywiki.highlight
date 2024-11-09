@@ -1,0 +1,271 @@
+created: 20241029153528645
+modified: 20241106150552751
+module-type: widget
+tags: 
+title: $:/plugins/anttt/highlight/highlightWidget.js
+type: application/javascript
+
+/*\
+title: Highlight.js
+type: application/javascript
+module-type: widget
+
+Highlight Widget
+
+\*/
+(function() {
+
+/*jslint node: true, browser: true */
+/*global $tw: false */
+"use strict";
+
+if (!$tw.browser) return;
+
+let root;
+let textNodes;
+let inputElement;
+let occurrencesCountText;
+
+function getAllText() {
+  textNodes = [];
+  const treeWalker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  let node = treeWalker.nextNode();
+  while (node) {
+    textNodes.push(node);
+    node = treeWalker.nextNode();
+  }
+}
+
+function reset() {
+  inputElement.value = '';
+  occurrencesCountText.textContent = '0/0';
+  CSS.highlights.clear();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  root = document.querySelector("section.tc-story-river");
+  getAllText();
+
+  // Set up the story river change observer
+  const storyRiverObserver = new MutationObserver((mutations, observer) => {
+    getAllText();
+    reset();
+  });
+  storyRiverObserver.observe(root, {
+    childList: true,
+    subtree: true,
+  });
+});
+
+let Widget = require("$:/core/modules/widgets/widget.js").widget;
+
+let HighlightWidget = function(parseTreeNode,options) {
+  this.initialise(parseTreeNode,options);
+};
+
+/*
+Inherit from the base widget class
+*/
+HighlightWidget.prototype = new Widget();
+
+/*
+Render the widget in the DOM
+*/
+HighlightWidget.prototype.render = function(parent,nextSibling) {
+
+let ranges;
+let occurrencesCount;
+let occurrenceNumber;
+occurrencesCountText = document.createTextNode('0/0');
+
+function getResizableParent(range) {
+  let parent = range.startContainer.parentElement;
+  let resize = getComputedStyle(parent).getPropertyValue("resize");
+  while (!parent.classList.contains("tc-tiddler-frame") && !(resize === "vertical" || resize === "both")) {
+    parent = parent.parentElement;
+    resize = getComputedStyle(parent).getPropertyValue("resize");
+  }
+  return (resize === "vertical" || resize === "both") ? parent : undefined;
+}
+
+function highlight(occurrenceNumber) {
+  const highlight = new Highlight(...ranges);
+  CSS.highlights.set("highlight", highlight);
+
+  const highlightCurrent = new Highlight(ranges[occurrenceNumber]);
+  CSS.highlights.set("highlight-current", highlightCurrent);
+  occurrencesCountText.textContent = `${occurrenceNumber + 1}/${ranges.length}`;
+}
+
+// Scrolls the occurrence into view
+function navigate(occurrenceNumber) {
+  const range = ranges[occurrenceNumber];
+
+  let rangeRect;
+  let scrollBy;
+
+  // Children of resizable elements are first scrolled into view in their parents.
+
+  const resizableParent = getResizableParent(range);
+//  const resizableParent = range.startContainer.parentElement.closest(".resizable");
+  if (resizableParent !== undefined) {
+    const rangeRect = range.getBoundingClientRect();
+    const resizableParentRect = resizableParent.getBoundingClientRect();
+    if (rangeRect.top < resizableParentRect.top) {
+      scrollBy = rangeRect.top - resizableParentRect.height / 2 - resizableParentRect.top;
+    } else if (rangeRect.bottom > resizableParentRect.bottom) {
+      scrollBy = rangeRect.bottom - resizableParentRect.height / 2;
+    }
+    resizableParent.scrollBy(0, scrollBy);
+  }
+
+  rangeRect = range.getBoundingClientRect();
+  if (rangeRect.top < 0) {
+    scrollBy = rangeRect.top - window.innerHeight / 2;
+  } else if (rangeRect.bottom > window.innerHeight) {
+    scrollBy = rangeRect.bottom - window.innerHeight / 2;
+  }
+  window.scrollBy(0, scrollBy);
+}
+
+inputElement = document.createElement("input");
+inputElement.id = "highlight-text";
+
+inputElement.addEventListener("input", () => {
+
+  if (!CSS.highlights) {
+    inputElement.blur();
+    const action = '<$action-sendmessage $message="tm-modal" $param="$:/plugins/anttt/highlight/CSSCustomHighlightAPINotSupported">'
+    window.parent.$tw.rootWidget.invokeActionString(action,this);
+    inputElement.value = '';
+    return;
+  }
+
+  CSS.highlights.clear();
+
+  const s = inputElement.value.toLowerCase();
+  if (!s) {
+    occurrencesCountText.textContent = '0/0';
+    return;
+  }
+
+  // All text
+  if (textNodes === undefined) return;
+
+  const text = textNodes
+    .map(node => node.textContent.toLowerCase())
+    .join('');
+
+  // Find occurrences of the search text in all text
+  const indices = [];
+  let startPosition = 0;
+  while (startPosition < text.length) {
+    const i = text.indexOf(s, startPosition);
+    if (i === -1) {
+      break;
+    }
+    indices.push(i);
+    startPosition = i + s.length;
+  }
+
+  // Find the ranges
+  ranges = indices
+    .map (index => {
+
+      const range = new Range();
+
+      // Find the index and the offset of the start node
+      let n = 0;
+      let i = 0;
+      while (index > n + textNodes[i].textContent.length) {
+        n += textNodes[i].textContent.length;
+        i++;
+      }
+      const startOffset = index - n;
+      range.setStart(textNodes[i], startOffset);
+
+      // Find the index and the offset of the end node
+      let endOffset = startOffset + s.length;
+      while (endOffset > textNodes[i].textContent.length) {
+        endOffset -= textNodes[i].textContent.length;
+        i++;
+      }
+      range.setEnd(textNodes[i], endOffset);
+
+      return range;
+    })
+
+  if (ranges.length > 0) {
+    occurrenceNumber = 0;
+    highlight(occurrenceNumber);
+    navigate(occurrenceNumber);
+  } else {
+    occurrencesCountText.textContent = '0/0';
+  }
+})
+
+parent.insertBefore(inputElement,nextSibling);
+this.domNodes.push(inputElement);
+
+// Add occurrences count
+occurrencesCount = document.createElement("span");
+occurrencesCount.id = "highlight-occurrencesCount";
+occurrencesCount.appendChild(occurrencesCountText);
+parent.insertBefore(occurrencesCount,nextSibling);
+this.domNodes.push(occurrencesCount);
+
+// Add previous button
+const previousButton = document.createElement("button");
+previousButton.id = "highlight-previous";
+previousButton.innerHTML = '<svg class="tc-image-up-arrow tc-image-button" viewBox="0 0 128 128"><path d="M63.892.281c2.027 0 4.054.77 5.6 2.316l55.98 55.98a7.92 7.92 0 010 11.196c-3.086 3.085-8.104 3.092-11.196 0L63.894 19.393 13.513 69.774a7.92 7.92 0 01-11.196 0c-3.085-3.086-3.092-8.105 0-11.196l55.98-55.98A7.892 7.892 0 0163.893.28z"/></svg>'
+previousButton.className = "tc-btn-invisible";
+previousButton.addEventListener("click", () => {
+  if (!CSS.highlights) return;
+  if (ranges !== undefined && ranges.length > 0) {
+    occurrenceNumber--;
+    if (occurrenceNumber === -1) {
+      occurrenceNumber = ranges.length - 1;
+    }
+    highlight(occurrenceNumber);
+    navigate(occurrenceNumber);
+  }
+});
+parent.insertBefore(previousButton,nextSibling);
+this.domNodes.push(previousButton);
+
+// Add next button
+const nextButton = document.createElement("button");
+nextButton.id = "highlight-next";
+nextButton.innerHTML = '<svg class="tc-image-down-arrow tc-image-button" viewBox="0 0 128 128"><path d="M64.177 100.069a7.889 7.889 0 01-5.6-2.316l-55.98-55.98a7.92 7.92 0 010-11.196c3.086-3.085 8.105-3.092 11.196 0l50.382 50.382 50.382-50.382a7.92 7.92 0 0111.195 0c3.086 3.086 3.092 8.104 0 11.196l-55.98 55.98a7.892 7.892 0 01-5.595 2.316z"/></svg>'
+nextButton.className = "tc-btn-invisible";
+nextButton.addEventListener("click", () => {
+  if (!CSS.highlights) return;
+  if (ranges !== undefined && ranges.length > 0) {
+    occurrenceNumber++;
+    if (occurrenceNumber === ranges.length) {
+      occurrenceNumber = 0;
+    }
+    highlight(occurrenceNumber);
+    navigate(occurrenceNumber);
+  }
+});
+parent.insertBefore(nextButton,nextSibling);
+this.domNodes.push(nextButton);
+
+// Add clear button
+const clearButton = document.createElement("button");
+clearButton.id = "highlight-clear";
+clearButton.innerHTML = '<svg class="tc-image-close-button tc-image-button" viewBox="0 0 128 128"><path fill-rule="evenodd" d="M65.086 75.41l-50.113 50.113c-3.121 3.121-8.192 3.126-11.316.002-3.118-3.118-3.123-8.19.002-11.316l50.114-50.114L3.659 13.982C.538 10.86.533 5.79 3.657 2.666c3.118-3.118 8.19-3.123 11.316.002l50.113 50.114L115.2 2.668c3.121-3.121 8.192-3.126 11.316-.002 3.118 3.118 3.123 8.19-.002 11.316L76.4 64.095l50.114 50.114c3.121 3.121 3.126 8.192.002 11.316-3.118 3.118-8.19 3.123-11.316-.002L65.086 75.409z"/></svg>';
+clearButton.className = "tc-btn-invisible";
+clearButton.addEventListener("click", () => {
+  if (!CSS.highlights) return;
+  reset();
+});
+parent.insertBefore(clearButton,nextSibling);
+this.domNodes.push(clearButton);
+
+};
+
+exports.highlight = HighlightWidget;
+
+})();

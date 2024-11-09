@@ -1,0 +1,8 @@
+created: 20241014170534141
+list-after: $:/core/ui/SideBarSegments/search
+modified: 20241103142908309
+tags: $:/tags/SideBarSegment
+title: $:/plugins/anttt/highlight/widget
+type: 
+
+<$highlight/>

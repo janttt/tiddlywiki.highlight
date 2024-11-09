@@ -1,0 +1,11 @@
+{
+    "title": "$:/plugins/anttt/highlight",
+    "name": "Highlight",
+    "description": "Find and highlight text in the tiddlers in the story river",
+    "author": "Jan Weytjens",
+    "version": "1.0.0-beta",
+    "core-version": ">=5.3.5",
+    "list": "readme license settings",
+    "plugin-type": "plugin"
+    "source": "https://github.com/janttt/tiddlywiki.highlight"
+}

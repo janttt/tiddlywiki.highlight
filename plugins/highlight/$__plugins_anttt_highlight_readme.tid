@@ -1,0 +1,51 @@
+created: 20241028145042991
+modified: 20241109203332542
+tags: 
+title: $:/plugins/anttt/highlight/readme
+
+!!Find and highlight text
+
+This plugin provides an input field in the sidebar below the search
+input field and finds and highlights the text entered on the fly
+in the tiddlers in the story river. Up and down buttons provide for
+navigation between the occurrences.
+
+The input field and the highlighting (if any) are cleared when
+the story river changes, e.g., when new tiddlers are opened, open tiddlers
+are closed or reordered, tiddlers are edited, or when tabs are changed.
+
+The default highlight colors are @@.highlight all occurrences@@ and @@.highlight-current current occurrence@@.
+They can be changed on the Settings tab.
+
+<div class="doc-icon-block">
+<div><strong>Warning</strong></div>
+<div class="doc-block-icon"><svg width="22pt" height="22pt" class="warning" viewBox="0 0 128 128"><path fill-rule="evenodd" d="M57.072 11c3.079-5.333 10.777-5.333 13.856 0l55.426 96c3.079 5.333-.77 12-6.928 12H8.574c-6.158 0-10.007-6.667-6.928-12l55.426-96zM64 37c-4.418 0-8 3.582-8 7.994v28.012C56 77.421 59.59 81 64 81c4.418 0 8-3.582 8-7.994V44.994C72 40.579 68.41 37 64 37zm0 67a8 8 0 100-16 8 8 0 000 16z"></path></svg></div>
+The plugin uses the [[CSS Custom Highlight API|https://drafts.csswg.org/css-highlight-api-1/]],
+a recent World Wide Web Consortium specification @@color: red;not (yet) implemented
+by all browsers@@. [[Web features explorer|https://web-platform-dx.github.io/web-features-explorer/features/highlight/]]
+tracks the implementations.
+The plugin will not find and highlight text in browsers that have not yet implemented
+the specification. Instead, a message will be shown on input in the text field.
+</div>
+
+!!Limitations
+
+The plugin finds only text in ''text nodes''. It will not find button labels, text in input fields, etc.
+
+Text will also not be found in ''Tiddlywiki's text editor''. The reason is technical: TiddlyWiki"s text editor uses iframes and the content of iframes is inaccessible to the host page. ''CodeMirror's editor'', by contrast, does not use iframes and, consequently, does not have this limitation.
+
+The plugin will find text only on visible ''tabs''. Switching tabs will clear the search.
+
+Text in resizable parents not currently visible will be scrolled into view but only
+in the vertical direction.
+
+Text in ''folded tiddlers'' will be found, but the highlight plugin will not unfold the tiddlers.
+On navigation the primary highlight will move and the counter will be updated but the highlighting will not be visible.
+On unfold the highlighting will be cleared.
+
+!!Uninstalling
+
+See Tiddlywiki's https://tiddlywiki.com/#Uninstalling%20a%20plugin page for instructions on how to uninstall the plugin.
+
+!!Acknowledgements
+<span style="font-size: small;">Without TiddlyWiki's forum, https://talk.tiddlywiki.org, and its contributors development of this plugin would have taken much longer. Special thanks to the experts who generously took the time to answer my questions.</span>
