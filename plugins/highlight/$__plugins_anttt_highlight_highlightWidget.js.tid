@@ -1,5 +1,5 @@
 created: 20241029153528645
-modified: 20241106150552751
+modified: 20241110204419360
 module-type: widget
 tags: 
 title: $:/plugins/anttt/highlight/highlightWidget.js
@@ -37,9 +37,9 @@ function getAllText() {
 }
 
 function reset() {
+  if (!CSS.highlights) return;
   inputElement.value = '';
   occurrencesCountText.textContent = '0/0';
-  CSS.highlights.clear();
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -105,9 +105,7 @@ function navigate(occurrenceNumber) {
   let scrollBy;
 
   // Children of resizable elements are first scrolled into view in their parents.
-
   const resizableParent = getResizableParent(range);
-//  const resizableParent = range.startContainer.parentElement.closest(".resizable");
   if (resizableParent !== undefined) {
     const rangeRect = range.getBoundingClientRect();
     const resizableParentRect = resizableParent.getBoundingClientRect();
@@ -258,7 +256,6 @@ clearButton.id = "highlight-clear";
 clearButton.innerHTML = '<svg class="tc-image-close-button tc-image-button" viewBox="0 0 128 128"><path fill-rule="evenodd" d="M65.086 75.41l-50.113 50.113c-3.121 3.121-8.192 3.126-11.316.002-3.118-3.118-3.123-8.19.002-11.316l50.114-50.114L3.659 13.982C.538 10.86.533 5.79 3.657 2.666c3.118-3.118 8.19-3.123 11.316.002l50.113 50.114L115.2 2.668c3.121-3.121 8.192-3.126 11.316-.002 3.118 3.118 3.123 8.19-.002 11.316L76.4 64.095l50.114 50.114c3.121 3.121 3.126 8.192.002 11.316-3.118 3.118-8.19 3.123-11.316-.002L65.086 75.409z"/></svg>';
 clearButton.className = "tc-btn-invisible";
 clearButton.addEventListener("click", () => {
-  if (!CSS.highlights) return;
   reset();
 });
 parent.insertBefore(clearButton,nextSibling);

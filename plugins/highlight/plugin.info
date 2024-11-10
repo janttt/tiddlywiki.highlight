@@ -6,6 +6,6 @@
     "version": "1.0.0-beta",
     "core-version": ">=5.3.5",
     "list": "readme license settings",
-    "plugin-type": "plugin"
+    "plugin-type": "plugin",
     "source": "https://github.com/janttt/tiddlywiki.highlight"
 }
