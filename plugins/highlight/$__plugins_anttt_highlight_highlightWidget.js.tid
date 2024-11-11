@@ -1,5 +1,5 @@
 created: 20241029153528645
-modified: 20241110204419360
+modified: 20241111165832696
 module-type: widget
 tags: 
 title: $:/plugins/anttt/highlight/highlightWidget.js
@@ -23,6 +23,7 @@ if (!$tw.browser) return;
 
 let root;
 let textNodes;
+let ranges;
 let inputElement;
 let occurrencesCountText;
 
@@ -38,8 +39,10 @@ function getAllText() {
 
 function reset() {
   if (!CSS.highlights) return;
+  ranges = [];
   inputElement.value = '';
   occurrencesCountText.textContent = '0/0';
+  CSS.highlights.clear();
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -48,8 +51,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Set up the story river change observer
   const storyRiverObserver = new MutationObserver((mutations, observer) => {
-    getAllText();
     reset();
+    getAllText();
   });
   storyRiverObserver.observe(root, {
     childList: true,
@@ -73,9 +76,8 @@ Render the widget in the DOM
 */
 HighlightWidget.prototype.render = function(parent,nextSibling) {
 
-let ranges;
-let occurrencesCount;
 let occurrenceNumber;
+
 occurrencesCountText = document.createTextNode('0/0');
 
 function getResizableParent(range) {
@@ -206,7 +208,7 @@ parent.insertBefore(inputElement,nextSibling);
 this.domNodes.push(inputElement);
 
 // Add occurrences count
-occurrencesCount = document.createElement("span");
+const occurrencesCount = document.createElement("span");
 occurrencesCount.id = "highlight-occurrencesCount";
 occurrencesCount.appendChild(occurrencesCountText);
 parent.insertBefore(occurrencesCount,nextSibling);
