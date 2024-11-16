@@ -1,5 +1,5 @@
 created: 20241029153528645
-modified: 20241111165832696
+modified: 20241116142725811
 module-type: widget
 tags: 
 title: $:/plugins/anttt/highlight/highlightWidget.js
@@ -193,6 +193,14 @@ inputElement.addEventListener("input", () => {
       range.setEnd(textNodes[i], endOffset);
 
       return range;
+    })
+
+    // Remove invisible ranges
+    // The parent element of option text is SELECT,
+    // which for all options returns checkVisibility true
+    .filter(range => {
+      const parent = range.startContainer.parentElement;
+      return parent.nodeName !== "SELECT" && parent.checkVisibility();
     })
 
   if (ranges.length > 0) {
