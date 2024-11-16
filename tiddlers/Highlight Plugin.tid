@@ -1,5 +1,5 @@
 created: 20241029151423549
-modified: 20241109203324998
+modified: 20241116165856403
 tags: 
 title: Highlight Plugin
 type: text/vnd.tiddlywiki
@@ -28,16 +28,17 @@ The default highlight colors are @@.highlight all occurrences@@ and @@.highlight
 
 !!Limitations
 
-The plugin finds only text in ''text nodes''. It will not find button labels, text in input fields, etc.
-
-Text will also not be found in ''Tiddlywiki's text editor''. The reason is technical: TiddlyWiki"s text editor uses iframes and the content of iframes is inaccessible to the host page. ''CodeMirror's editor'', by contrast, does not use iframes and, consequently, does not have this limitation.
+The plugin finds only text in ''text nodes''.
+It will not find text in input fields, input text areas and dropdown menus.
 
 The plugin will find text only on visible ''tabs''. Switching tabs will clear the search.
 
-Text in resizable parents not currently visible will be scrolled into view but only
+Text in ''resizable parents'' not currently visible will be scrolled into view but only
 in the vertical direction.
 
-Text in ''folded tiddlers'' will be found, but the highlight plugin will not unfold the tiddlers. On navigation the primary highlight will move and the counter will be updated but the highlighting will not be visible. On unfold the highlighting will be cleared.
+Text in ''Tiddlywiki's text editor'' will not be found. The reason is technical: TiddlyWiki"s text editor uses iframes and the content of iframes is inaccessible to the host page. ''CodeMirror's editor'', by contrast, does not use iframes and, consequently, does not have this limitation.
+
+Text in ''folded tiddlers'' is invisible and will also not be found.
 
 !!Uninstalling
 
