@@ -2,4 +2,4 @@
 
 Go to https://janttt.github.io/tiddlywiki.highlight for details and installation.
 
-Current version: 1.0.3-beta
+Current version: 1.0.4-beta
