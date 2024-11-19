@@ -1,5 +1,5 @@
 created: 20241029153528645
-modified: 20241116142725811
+modified: 20241119200837544
 module-type: widget
 tags: 
 title: $:/plugins/anttt/highlight/highlightWidget.js
@@ -81,7 +81,7 @@ let occurrenceNumber;
 occurrencesCountText = document.createTextNode('0/0');
 
 function getResizableParent(range) {
-  let parent = range.startContainer.parentElement;
+  let parent = range.endContainer.parentElement;
   let resize = getComputedStyle(parent).getPropertyValue("resize");
   while (!parent.classList.contains("tc-tiddler-frame") && !(resize === "vertical" || resize === "both")) {
     parent = parent.parentElement;
