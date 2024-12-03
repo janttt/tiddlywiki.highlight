@@ -1,5 +1,5 @@
 created: 20241029151423549
-modified: 20241202213626586
+modified: 20241203154719262
 tags: 
 title: Highlight Plugin
 type: text/vnd.tiddlywiki
@@ -10,7 +10,7 @@ This plugin provides an input field in the sidebar below the search input field 
 
 The input field and the highlighting (if any) are cleared when the story river changes, e.g., when new tiddlers are opened, open tiddlers are closed or reordered, tiddlers are edited, or when tabs are changed.
 
-The plugin has one subplugin: ''Highlight action-highlight'', which allows the highlighting to be triggered by an action widget. See the //readme// of this subplugin in ControlPanel for details.
+The plugin has one subplugin: ''[[Highlight action-highlight|$:/plugins/anttt/highlight-action-highlight]]'', which allows the highlighting to be triggered by an action widget. See the //[[readme|$:/plugins/anttt/highlight-action-highlight]]// of this subplugin in ControlPanel for details.
 
 !!Installation
 
