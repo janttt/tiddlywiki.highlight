@@ -1,0 +1,11 @@
+{
+    "title": "$:/plugins/anttt/highlight-action-highlight",
+    "name": "Highlight action-highlight",
+    "description": "Set the search text of the Highlight plugin with an action widget",
+    "author": "Jan Weytjens",
+    "version": "1.0.0-beta",
+    "core-version": ">=5.3.6",
+    "list": "readme",
+    "plugin-type": "plugin",
+    "parent-plugin": "Highlight"
+}

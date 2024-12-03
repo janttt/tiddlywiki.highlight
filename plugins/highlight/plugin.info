@@ -3,8 +3,8 @@
     "name": "Highlight",
     "description": "Find and highlight text in the tiddlers in the story river",
     "author": "Jan Weytjens",
-    "version": "1.0.4-beta",
-    "core-version": ">=5.3.5",
+    "version": "1.0.5-beta",
+    "core-version": ">=5.3.6",
     "list": "readme license settings",
     "plugin-type": "plugin",
     "source": "https://github.com/janttt/tiddlywiki.highlight"

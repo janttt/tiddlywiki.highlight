@@ -1,0 +1,30 @@
+created: 20241127222528401
+modified: 20241202184231253
+tags: 
+title: $:/plugins/anttt/highlight-action-highlight/readme
+
+\define highlight-action()
+<$action-highlight text={{!!highlight}}/>
+\end
+
+This subplugin of the Highlight plugin allows highlighting to be triggered with
+the action widget `action-highlight` (see https://tiddlywiki.com/#ActionWidgets
+for information about action widgets). The widget has one attribute, `text`.
+The text to be highlighted can come from any source. In the example below it comes
+from an ''edit-text'' widget that stores its text in the ''highlight'' field:
+
+```
+\define highlight-action()
+<$action-highlight text={{!!highlight}}/>
+\end
+
+<$edit-text field="highlight"/>
+<$button actions=<<highlight-action>>>Highlight</$button>
+```
+
+The code renders as follows:
+
+{{$:/plugins/anttt/highlight-action-highlight/example}}
+
+The widget triggers highlighting by sending an input event to the input field
+of the parent Highlight plugin.

@@ -1,0 +1,8 @@
+created: 20241202182302480
+highlight: light
+modified: 20241202210823536
+tags: 
+title: $:/plugins/anttt/highlight-action-highlight/example
+
+<$edit-text field="highlight"/>
+<$button actions=<<highlight-action>>>Highlight</$button>

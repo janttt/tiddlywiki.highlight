@@ -1,0 +1,67 @@
+created: 20241124142702125
+modified: 20241202212223631
+module-type: widget
+tags: 
+title: $:/plugins/anttt/highlight-action-highlight/action-highlight.js
+type: application/javascript
+
+/*\
+title: $:/plugins/anttt/highlight-action-highlight/action-highlight.js
+type: application/javascript
+module-type: widget
+
+Highlight text by setting the search text in the input field of the Highlight plugin
+
+\*/
+(function(){
+
+/*jslint node: true, browser: true */
+/*global $tw: false */
+"use strict";
+
+let Widget = require("$:/core/modules/widgets/widget.js").widget;
+
+let HighlightWidget = function(parseTreeNode,options) {
+	this.initialise(parseTreeNode,options);
+};
+
+/*
+Inherit from the base widget class
+*/
+HighlightWidget.prototype = new Widget();
+
+/*
+Render this widget into the DOM
+*/
+HighlightWidget.prototype.render = function(parent,nextSibling) {
+	this.computeAttributes();
+};
+
+/*
+Invoke the action associated with this widget
+*/
+HighlightWidget.prototype.invokeAction = function(triggeringWidget,event) {
+  const text = this.getAttribute("text");
+  const highlighttext = document.getElementById("highlight-text");
+  if (!highlighttext) {
+    alert(
+`The Highlight action-highlight plugin
+depends on the Highlight plugin, which
+seems to be disabled or not installed.`
+    );
+    return true;
+  }
+  if (text) {
+    highlighttext.value = text;
+    highlighttext.dispatchEvent(new Event("input"));
+  }
+  return true;
+};
+
+HighlightWidget.prototype.refresh = function(changedTiddlers) {
+	return this.refreshChildren(changedTiddlers);
+};
+
+exports["action-highlight"] = HighlightWidget;
+
+})();

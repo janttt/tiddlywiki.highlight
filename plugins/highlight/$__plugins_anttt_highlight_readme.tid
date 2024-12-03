@@ -1,5 +1,5 @@
 created: 20241028145042991
-modified: 20241116150649569
+modified: 20241202220050246
 tags: 
 title: $:/plugins/anttt/highlight/readme
 
@@ -16,6 +16,9 @@ are closed or reordered, tiddlers are edited, or when tabs are changed.
 
 The default highlight colors are @@.highlight all occurrences@@ and @@.highlight-current current occurrence@@.
 They can be changed on the Settings tab.
+
+The plugin has one subplugin: ''Highlight action-highlight'', which allows the highlighting to be triggered by
+an action widget. See the //readme// of the subplugin for details.
 
 <div class="doc-icon-block">
 <div><strong>Warning</strong></div>
