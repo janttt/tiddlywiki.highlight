@@ -1,5 +1,5 @@
 created: 20241124142702125
-modified: 20241202212223631
+modified: 20250301203839043
 module-type: widget
 tags: 
 title: $:/plugins/anttt/highlight-action-highlight/action-highlight.js
@@ -45,9 +45,9 @@ HighlightWidget.prototype.invokeAction = function(triggeringWidget,event) {
   const highlighttext = document.getElementById("highlight-text");
   if (!highlighttext) {
     alert(
-`The Highlight action-highlight plugin
-depends on the Highlight plugin, which
-seems to be disabled or not installed.`
+`The Highlight action-highlight plugin requires the Highlight plugin's input field to be visible in the sidebar.
+
+If the sidebar is visible and the input field is not showing, the Highlight plugin may be disabled or not installed.`
     );
     return true;
   }

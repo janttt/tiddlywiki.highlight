@@ -1,5 +1,5 @@
 created: 20241029153528645
-modified: 20241119200837544
+modified: 20250301143624526
 module-type: widget
 tags: 
 title: $:/plugins/anttt/highlight/highlightWidget.js
@@ -40,8 +40,8 @@ function getAllText() {
 function reset() {
   if (!CSS.highlights) return;
   ranges = [];
-  inputElement.value = '';
-  occurrencesCountText.textContent = '0/0';
+  if (inputElement !== undefined) inputElement.value = '';
+  if (occurrencesCountText !== undefined) occurrencesCountText.textContent = '0/0';
   CSS.highlights.clear();
 }
 
@@ -136,7 +136,7 @@ inputElement.addEventListener("input", () => {
   if (!CSS.highlights) {
     inputElement.blur();
     const action = '<$action-sendmessage $message="tm-modal" $param="$:/plugins/anttt/highlight/CSSCustomHighlightAPINotSupported">'
-    window.parent.$tw.rootWidget.invokeActionString(action,this);
+    $tw.rootWidget.invokeActionString(action,this);
     inputElement.value = '';
     return;
   }
@@ -270,7 +270,10 @@ clearButton.addEventListener("click", () => {
 });
 parent.insertBefore(clearButton,nextSibling);
 this.domNodes.push(clearButton);
+};
 
+HighlightWidget.prototype.refresh = function(changedTiddlers) {
+	return this.refreshChildren(changedTiddlers);
 };
 
 exports.highlight = HighlightWidget;
